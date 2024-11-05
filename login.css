@@ -1,0 +1,185 @@
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    :root {
+    --primary-purple: #6100C2;
+    --dark-bg: #21201E;
+    --light-bg: #F0E6FF;
+    }
+
+
+    .signup-theme-1 {
+    /* Main backgrounds */
+    --page-background: linear-gradient(135deg, #6100C2, #8A2BE2);
+    --form-background: rgba(255, 255, 255, 0.95);
+    
+    /* Text colors */
+    --heading-color: #21201E;
+    --text-color: #4A4A4A;
+    --label-color: #6100C2;
+    
+    /* Input fields */
+    --input-background: #F8F5FF;
+    --input-border: #E0D3F5;
+    --input-focus-border: #6100C2;
+    
+    /* Buttons */
+    --button-primary-bg: #6100C2;
+    --button-primary-hover: #7200E5;
+    --button-text: #FFFFFF;
+    
+    /* Accents */
+    --divider-color: #E6E6E6;
+    --error-color: #DC2626;
+    --success-color: #059669;
+    }
+
+
+    body{
+        height: 100vh;
+        background-image: url('./images/pexels-anniroenkae-3109850.jpg');
+        background-position: right;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .wrapper{
+        
+        width: max(50%,600px);
+        background: var(--page-background);
+        height: 100vh;
+        border-radius: 0 20px 20px 0;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 10px;
+    }
+    h1{
+        color: var(--heading-color);
+        text-transform: capitalize;
+        font-size: 50px;
+
+    }
+    form{
+        margin:20px ;
+        background-color: var(--form-background);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        border-radius: 14px;
+        padding: 20px;
+       
+    }
+    form div {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-top: 15px;
+    }
+    form div label{
+        width: 40px;
+        background-color: var(--label-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        border-radius: 10px 0 0 10px;
+        /* border-right: 1px solid var(--divider-color); */
+    }
+    form div label i{
+        color: var(--input-background);
+        font-size: 22px;
+    }
+
+    form div .input{
+        width: 90%;
+        background-color: var(--input-background);
+        height: 40px;
+        border: 1px solid var(--input-border);
+        border-radius: 0 10px 10px 0;
+        padding: 5px 10px;
+        margin: 0;
+    }
+
+    form div input{
+        color: var(--text-color);
+        width: 100%;
+        outline: none;
+        border: none;
+        background:none;
+        height: 100%;
+    }
+    form div input::placeholder{
+        font-weight: 550;
+    }
+    button{
+        width: fit-content;
+        height: auto;
+        padding: 5px 20px;
+        border-radius: 20px;
+        font-size: 18px;
+        color: var(--button-text);
+        border: none;
+        background-color: var(--button-primary-bg);
+        transition: all 0.5s ease;
+        cursor: pointer;
+        margin: 15px 0;
+    }
+
+    button:hover{
+        background-color: var(--button-primary-hover);
+        transform: scale(0.95);
+    }
+
+    form div .input:has(input:focus){
+        border: 1.5px solid var(--input-focus-border);
+        border-left: none;
+    }
+
+    form div:has(.input input:focus) label{
+        background-color: var(--dark-bg);
+    }
+
+    body .wrapper form  .incorrect .input{
+        border: 1.5px solid var(--error-color);
+    }
+    
+    html body .wrapper form  .incorrect label{
+        background-color: var(--error-color);
+    }
+
+    body .wrapper form  .correct .input{
+        border: 1.5px solid var(--success-color);
+    }
+    
+    html body .wrapper form  .correct label{
+        background-color: var(--success-color);
+    }
+ p {
+    font-size: small;
+ }
+ .error{
+    width: 200px;
+    color: var(--error-color);
+    font-size: 12px;
+ }
+ a{
+    text-decoration: none;
+ }
+ a:hover{
+    text-decoration: underline;
+ }
+
+ @media screen and (max-width:850px) {
+    .wrapper{
+        width: min(100%,600px);
+    }
+ }

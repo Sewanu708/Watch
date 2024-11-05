@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    ul{
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    .style{
+        width: 100px;
+        height: 40px;
+        border: 1px solid brown;
+        opacity: 0;
+        transform:translateX(100px);
+        transition: 200ms;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+    }
+
+    .style.show{
+        transform:translateX(0);
+        opacity: 1;
+    }
+    
+</style>
+<body>
+
+    <ul>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        <li class="style">
+            School
+        </li>
+        
+    </ul>
+</body>
+
+<script>
+    const cards = document.querySelectorAll('.style');
+
+    const observer = new IntersectionObserver((entries)=>{
+        // console.log(entries)
+        entries.forEach((entry)=>{
+            entry.target.classList.toggle('show',entry.isIntersecting);
+            if (entry.isIntersecting) observer.unobserve(entry.target)
+        })
+   
+    })
+
+    const lastCardObserver = new IntersectionObserver(entries=>{
+        // console.log(entries)
+        const lastCard = entries[0];
+        console.log(lastCard)
+        if (!lastCard.isIntersecting) return;
+        loadNewCards();
+        lastCardObserver.unobserve(lastCard.target);
+        lastCardObserver.observe(document.querySelector('.style:last-child'))
+    },{
+
+    })
+    lastCardObserver.observe(document.querySelector('.style:last-child'))
+
+    cards.forEach((card)=>{
+        observer.observe(card)
+    })
+    cardContainer = document.querySelector('ul');
+    function loadNewCards(){
+        for (let i=0; i<10; i++){
+            const card = document.createElement("li")
+            card.textContent = "University";
+            card.classList.add('style');
+            observer.observe(card)
+            cardContainer.append(card)
+        }
+    }
+</script>
+</html>

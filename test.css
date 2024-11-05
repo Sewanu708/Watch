@@ -1,0 +1,89 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(45deg, #4f46e5, #7c3aed);
+    display: grid;
+    place-items: center;
+    font-family: -apple-system, system-ui, sans-serif;
+}
+
+.search-box {
+    background: white;
+    position: relative;
+    height: 50px;
+    border-radius: 25px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    /* transition: all 0.3s ease; */
+    animation: shrinkBox 0.5s ease-out forwards;
+}
+
+/* Animation to expand the search box */
+@keyframes expandBox {
+    from {
+        width: 50px;
+    }
+    to {
+        width: 350px;
+    }
+}
+
+/* Animation to shrink the search box */
+@keyframes shrinkBox {
+    from {
+        width: 350px;
+    }
+    to {
+        width: 50px;
+    }
+}
+.search-box.active {
+    width: 350px;
+    animation: expandBox 0.5s ease-out forwards;
+}
+
+.search-box input {
+    width: 0;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    color: #333;
+}
+
+.search-box.active input {
+    width: 100%;
+    padding-left: 15px;
+    opacity: 1;
+}
+
+.search-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #4f46e5;
+    font-size: 20px;
+    transition: 0.3s ease;
+}
+
+.search-box.active .search-btn {
+    transform: rotate(90deg);
+}
+
+.search-box.active .search-btn i {
+    transform: rotate(270deg);
+}

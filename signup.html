@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="login.css">
+    <script type="text/javascript" src="./scripts/login.js" defer></script>
+</head>
+
+<body class="signup-theme-1">
+    <div class="wrapper">
+        <h1>signup</h1>
+        <form id="form">
+            <div>
+                <label for="first-name"><i class="fa-solid fa-user"></i></label>
+                <div class="input">
+                    <input type="text" required name="first-name" placeholder="First Name" id="first-name">
+                </div>
+            </div>
+
+            <div>
+                <label for="last-name"><i class="fa-solid fa-user"></i></label>
+                <div class="input">
+                    <input type="text" required name="last-name" placeholder="Last Name" id="last-name">
+                </div>
+            </div>
+
+
+            <div>
+                <label for="email"><i class="fa-solid fa-envelope"></i></label>
+                <div class="input">
+                    <input type="email" required name="e-mail" placeholder="Email" id="email">
+                </div>
+               
+
+            </div>
+
+            <div>
+                <label for="password"><i class="fa-solid fa-lock"></i></label>
+                <div class="input">
+                    <input type="password" required name="password" placeholder="Password" id="password">
+                    <i class="fa-solid fa-eye js-eye"></i>
+                </div>
+                
+            </div>
+
+            <p class="password-error-message error" style="display: none;"></p>
+
+            <div>
+                <label for="confirm-password"><i class="fa-solid fa-lock"></i></label>
+                <div class="input">
+                    <input type="password" required name="confirm-password" placeholder="Confirm Password" id="confirm-password">
+                    <i class="fa-solid fa-eye js-eye"></i>
+                </div>
+            </div>
+            <p class="re-password-error-message error" style="display: none;">Password does not match</p>
+
+            <button type="submit">Submit</button>
+            <p>Have an Account?<a href="login.html">Log in </a></p>
+        </form>
+    </div>
+</body>
+</html>

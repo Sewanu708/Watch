@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="login.css">
+</head>
+
+<body class="signup-theme-1">
+    <div class="wrapper">
+        <h1>Login</h1>
+        <form id="form">
+            <div>
+                <label for="email"><i class="fa-solid fa-envelope"></i></label>
+                <div class="input">
+                    <input type="email" required name="e-mail" placeholder="Email" id="email">
+                </div>
+               
+
+            </div>
+
+            <div>
+                <label for="password"><i class="fa-solid fa-lock"></i></label>
+                <div class="input">
+                    <input type="password" required name="password" placeholder="Password" id="password">
+                    <i class="fa-solid fa-eye js-eye"></i>
+                </div>
+                
+            </div>
+            <button type="submit">Login</button>
+            <p>Don't have an account? <a href="signup.html">Create Account</a></p>
+        </form>
+    </div>
+</body>
+<script src="./scripts/login.js"></script>
+</html>
