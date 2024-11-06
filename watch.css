@@ -250,6 +250,12 @@ nav a{
     font-weight: 700;
     font-size: 48px;
     margin-bottom: 20px;
+    /* width: 300px; */
+    height:60px;
+    padding: 0 10px 0 0;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description{
@@ -640,5 +646,11 @@ label{
     .selected-movie{
         grid-template-columns: 1fr;
         row-gap: 20px;
+    }
+}
+
+@media screen and (max-width:350px){
+    .inner-div,.trending{
+        padding: 40px 16px ;
     }
 }

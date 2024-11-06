@@ -25,15 +25,13 @@ function loadMovies(currentPage){
         }
         load.displayBackdrop(moviesFetched[Math.round(Math.random()*10)])
     
-        
         load.renderImage(trendingMovies);
         // console.log(trendingMovies)
         console.log(`Successfully rendered ${trendingMovies.length} trending movies to DOM`);
         
-        
         likedMovie('trend',trendingMovies);
-        mainPageFav();
-        displaySelectedMovie(trendingMovies);
+        mainPageFav(trendingMovies);
+        displaySelectedMovie(trendingMovies,load);
         return response[1]
     }).then((response)=>{
         // console.log('Hello, World!');
@@ -49,36 +47,36 @@ function loadMovies(currentPage){
         })
         
         lastMovieObserver.observe(document.querySelector('.trend:last-child'));
-
     })
     
 }
 loadMovies(currentPage)
-function mainPageFav(){
+function mainPageFav(movieList){
         const likedMovie=document.querySelector('.js-favourite');
         likedMovie.addEventListener('click',()=>{
-            
+   
         let favouriteMovies = JSON.parse(localStorage.getItem('favourites'))? JSON.parse(localStorage.getItem('favourites')) : [];
 
         // console.log(favouriteMovies)
         const movieId=document.querySelector('.js-description').dataset.movieId;
+        const movieDetailObject=movieList.find(movie=> movie.id == movieId)
 
         if (likedMovie.classList.contains('fa-solid')){
             likedMovie.classList.remove('fa-solid');
             likedMovie.classList.add('fa-regular');
-            favouriteMovies=removeItem(favouriteMovies,movieId);
+            favouriteMovies=removeItem(favouriteMovies,movieDetailObject);
             // console.log(favouriteMovies)
         }else{
             likedMovie.classList.add('fa-solid');
             likedMovie.classList.remove('fa-regular')
-            favouriteMovies=saveFavMovies(favouriteMovies,movieId)
+            favouriteMovies=saveFavMovies(favouriteMovies,movieDetailObject)
             // console.log(favouriteMovies)
         }  
         localStorage.setItem('favourites',JSON.stringify(favouriteMovies))
     })
 }
 
-function displaySelectedMovie(list){
+function displaySelectedMovie(list,load){
     const movies = document.querySelectorAll('.trend');
     // console.log(movies)
     movies.forEach((movie)=>{
@@ -91,7 +89,7 @@ function displaySelectedMovie(list){
             const response = load.renderMovieDetails(movieId,list)
             if (document.querySelector('.selected-movie')) document.querySelector('.selected-movie').remove()
             document.body.append(response)
-            
+            load.watch()
         })
     })
 }

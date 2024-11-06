@@ -8,31 +8,19 @@ const options = {
     }
 }
 class Trend extends Loadfrombackend{
-    async moviesFetch(){
-        let allMoviesTrue=true
-        let allMovies=1;
-        for (let i=0;i<allMovies;i++){
-        
-            try{
-                
-                const movies = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${1}`, this.options)
-            
-                const moviesJson = await movies.json()
-                // return (moviesJson)
-                    if(allMoviesTrue){
-                        allMoviesTrue=false
-                        allMovies=moviesJson.total_pages;
-                        allMovies = 1
-                    }
-                
-                    this.trending.push(moviesJson.results);
-            }catch (error){
-                console.log(error)
-            }
-            
+    async moviesFetch(pageNumber){
+        let pages;
+        try{
+            this.trending=this.trending?[]:this.trending;
+            const movies = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${pageNumber}`, this.options);
+            const moviesJson = await movies.json();
+            pages=moviesJson.total_pages;
+            this.trending.push(moviesJson.results);
+        }catch (error){
+            console.log(error)
         }
         console.log(`Successfully loaded ${this.trending.flat().length} trending movies from backend`)
-        return this.trending.flat();
+        return [this.trending.flat(),pages];
         
     };
 
@@ -85,33 +73,49 @@ class Trend extends Loadfrombackend{
 
 const load = new Trend(options);
 let trendingMovies=[];
-load.moviesFetch().then((response)=>{
-    for (const movie of response){
-        if (!movie.adult===true){
-            trendingMovies.push(movie)
-            // console.log(movie)
+let currentPage = 1;
+
+loadMovies(currentPage);
+
+function loadMovies(currentPage){
+    load.moviesFetch(currentPage).then((response)=>{
+        const moviesFetched=response[0]
+        for (const movie of moviesFetched){
+            if (!movie.adult===true){
+                trendingMovies.push(movie)
+                console.log(movie)
+            }
+       
         }
-   
-    }
-    
-    load.renderImage(trendingMovies);
-    console.log(`Successfully rendered ${trendingMovies.length} trending movies to DOM`);
-    likedMovie('trending-movie',trendingMovies);
-    displaySelectedMovie(trendingMovies);
-})
+        
+        load.renderImage(trendingMovies);
+        console.log(`Successfully rendered ${trendingMovies.length} trending movies to DOM`);
+        likedMovie('trending-movie',trendingMovies);
+        displaySelectedMovie(trendingMovies,load);
+        return response[1]
+    }).then((response)=>{
+        const lastMovieObserver = new IntersectionObserver((entries=>{
+            const lastElementObserver = entries[0];
+            if (!lastElementObserver.isIntersecting) return;
+            currentPage++;
+            loadNextPage(currentPage,response);
+            lastElementObserver.unobserve(lastElementObserver.target)
+            lastMovieObserver.observe(document.querySelector('.trending-movie:last-child'));
+        }),{rootMargin:'-100px'})
+        lastMovieObserver.observe(document.querySelector('.trending-movie:last-child'));
+    })
+}
 
 
-function displaySelectedMovie(list){
-    
+function displaySelectedMovie(list,load){
     const movies = document.querySelectorAll('.trending-movie');
-    console.log(movies)
     movies.forEach((movie)=>{
         movie.addEventListener('click',()=>{
-            
             const movieId= movie.dataset.movieid;
             const response = load.renderMovieDetails(movieId,list)
             const code = createSelectedMovieContainer(response);
             document.body.append(code);
+            load.watch();
             closeSelectedMovieBar();
         })
     })
@@ -131,4 +135,9 @@ function closeSelectedMovieBar(){
     closeIcon.addEventListener('click',()=>{
         document.body.querySelector('.selected-movie-overall-container').remove()
     })
+}
+function loadNextPage(page_number,total_pages){
+    if (page_number>total_pages) return;
+    // console.log(page_number)
+    loadMovies(page_number)
 }

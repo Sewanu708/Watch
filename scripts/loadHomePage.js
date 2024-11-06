@@ -18,7 +18,7 @@ export class Loadfrombackend{
      
         try{
             const genres = await fetch('https://api.themoviedb.org/3/genre/movie/list?language=en', this.options);
-            // if (!genres.ok) throw new Error(genres.status)
+            if (!genres.ok) throw new Error(genres.status)
             const genresJson = await genres.json();
             console.log(genresJson)
             const genreList = genresJson.genres;
@@ -87,7 +87,7 @@ export class Loadfrombackend{
     async moviesFetch(pageNumber){
         let pages;
         try{
-            this.trending=this.trending?[]:this.trending
+            this.trending=this.trending?[]:this.trending;
             const movies = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${pageNumber}`, this.options);
             const moviesJson = await movies.json();
             pages=moviesJson.total_pages;
@@ -133,7 +133,9 @@ export class Loadfrombackend{
         `
         document.querySelector('.js-title').innerHTML=`${movie.title}`
         document.querySelector('.js-description').dataset.movieId = `${movie.id}`
+        document.querySelector('.js-watch').dataset.moviedetails=`${[movie.backdrop_path,movie.title]}`
         backdropDisplayed=1;
+        this.backdropDisplayedWatch()
     }
     movieDetails(movieId,movieList){
         try{
@@ -195,13 +197,11 @@ export class Loadfrombackend{
                     ${details.overview}
                 </div>
                 <div class="action">
-                    <button class="watch-now">
+                    <button class="watch-now js-watch-now" data-movieDetails="${[details.backdrop_path,details.original_title]}">
                         Watch now
                     </button>
     
-                    <button class="fav" >
-                        <i class="fa-regular fa-heart js-favourite"></i>
-                    </button>
+                    
                 </div>
             </div>
       
@@ -211,6 +211,22 @@ export class Loadfrombackend{
        }catch(error){
         console.log(error)
        }
+    }
+    watch(){
+        const watchDOM = document.querySelector('.js-watch-now');
+        watchDOM.addEventListener('click',()=>{
+            const backdrop_path = watchDOM.dataset.moviedetails;
+            sessionStorage.setItem('movie',JSON.stringify(backdrop_path));
+            location.href = "./yourMovie.html"
+        })
+    }
+    backdropDisplayedWatch(){
+        const watchDOM = document.querySelector('.js-watch');
+        watchDOM.addEventListener('click',()=>{
+            const backdrop_path = watchDOM.dataset.moviedetails;
+            sessionStorage.setItem('movie',JSON.stringify(backdrop_path));
+            location.href = "./yourMovie.html"
+        })
     }
 }
 export function saveFavMovies(arr,value){
@@ -240,7 +256,7 @@ export function likedMovie(container,movieList){
         const movieDetailObject=movieList.find(movie=> movie.id == movieId)
 
         const likedMovie=movie.querySelector('.js-fav');
-        if (favouriteMovies.includes(movieId)){
+        if (favouriteMovies.includes(movieDetailObject)){
             likedMovie.classList.add('fa-solid');
             likedMovie.classList.remove('fa-regular');
         }
@@ -265,54 +281,4 @@ export function likedMovie(container,movieList){
     
 
 }
-// const options = {
-//     method: 'GET',
-//     headers: {
-//       accept: 'application/json',
-//       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhMzNlOWI4MWEyMWU4NDhkNTE4NGQ0ZjQ2ZTk3YTNkNSIsIm5iZiI6MTcyODkwMzcyMS4zOTMzNjIsInN1YiI6IjY3MGNmODU5MWNhNGMzOWZkZWViOTU5NiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DTE2v4paAARib0Ft-AlsMLANEuLczVu-92mCi3pFiTM'
-//     }
-// }
-// async function seriesGenre(){
-//     try{
-//         const genres = await fetch('https://api.themoviedb.org/3/genre/tv/list?language=en', options);
-//         const genresJson = await genres.json();
-//         const genreList = genresJson.genres;
-//         return genreList;
-//     }catch (error){
-//         console.log(error)
-//     }
-  
-// }
-// console.log(seriesGenre())
-// async function moviesFetch(){
-//     let allMoviesTrue=true
-//     let allMovies=1;
-//     for (let i=0;i<allMovies;i++){
-    
-//         try{
-            
-//             const movies = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${i+1}`, this.options)
-        
-//             const moviesJson = await movies.json()
-//             // return (moviesJson)
-//                 if(allMoviesTrue){
-//                     allMoviesTrue=false
-//                     allMovies=moviesJson.total_pages;
-//                     allMovies = Math.min(allMovies,20)
-                    
-//                 }
-            
-//                 this.trending.push(moviesJson.results);
-//         }catch (error){
-//             console.log(error)
-//         }
-        
-//     }
-//     console.log(`Successfully loaded ${this.trending.flat().length} trending movies from backend`)
-//     return this.trending.flat(),allMovies
-    
-// };
 
-// get the pages
-// observe the first page last element
-// reload on getting to the last element
