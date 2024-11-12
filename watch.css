@@ -329,7 +329,10 @@ nav a{
     align-items: start;
     justify-content: start;
     position: relative;
-    border-radius: 14px; 
+    border-radius: 14px;
+}
+.add-opacity{
+    opacity: 0.1;
 }
 .trend img{
     width: 255px;
@@ -366,6 +369,14 @@ nav a{
     font-weight: 600;
     font-size: 14px;
 
+}
+.trend-section{
+    height: 400px;
+}
+.trend-page{
+    margin-left: 280px;
+    padding: 40px 32px 10px 32px ;
+    background-color: #21201E;
 }
 
 .favourite{
@@ -489,7 +500,7 @@ label{
     display: block;
 }
 .selected-movie{
-    height:auto;
+ 
     margin-left: 280px;
     background-color: var(--background-color);
     padding: 6px 32px;
@@ -622,25 +633,18 @@ label{
         left: 10%;
         
     }
-    @keyframes searchExpand {
-
-        0%{
-            width:0px;
-        }
-       
-        100%{
-            width: 80%;
-        }
+    .trend-page{
+        margin-left: 0;
+        width: 100%;
+        max-width: 1300px;
     }
-    @keyframes searchShrink {
-        0%{
-            width: 80%;
-        }
-       
-        100%{
-            width: 0px;
-        }
+    
+    .trend-section{
+        margin-left: 0px;
+        width: 100%;
+        max-width: 1300px;
     }
+   
 }
 @media screen and (max-width:750px){
     .selected-movie{
@@ -652,5 +656,25 @@ label{
 @media screen and (max-width:350px){
     .inner-div,.trending{
         padding: 40px 16px ;
+    }
+}
+
+@keyframes searchExpand {
+
+    0%{
+        width:0px;
+    }
+   
+    100%{
+        width: 80%;
+    }
+}
+@keyframes searchShrink {
+    0%{
+        width: 80%;
+    }
+   
+    100%{
+        width: 0px;
     }
 }

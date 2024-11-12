@@ -81,8 +81,9 @@ function loadAndDisplay(classInstance,response){
 }
 
 function observers(response){
-    console.log(response)
+    // console.log(response)
         const lastMovieObserver = new IntersectionObserver(entries=>{
+        console.log(response)
         const lastElementObserver = entries[0];
         if (!lastElementObserver.isIntersecting) return;
         currentPage++
@@ -91,13 +92,6 @@ function observers(response){
             loadMovies(currentPage)
             };
         },{rootMargin:'1000px'})
-        
         lastMovieObserver.observe(document.querySelector('.trend:last-child'));
-        const trendContianerMutationObserver = new MutationObserver((entries)=>{
-            const lastElement = document.querySelector('.trend:last-child');
-            lastMovieObserver.observe(lastElement);
-        })
-        trendContianerMutationObserver.observe(document.querySelector('.trends'),{
-            childList:true
-        })
+       
 }

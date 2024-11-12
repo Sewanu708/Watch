@@ -1,4 +1,4 @@
-import {Loadfrombackend,likedMovie} from './loadHomePage.js'
+import {Loadfrombackend,likedMovie,displaySelectedMovie} from './loadHomePage.js'
 
 const options = {
     method: 'GET',
@@ -42,8 +42,8 @@ class Trend extends Loadfrombackend{
             moviesCode+=`
                 
 
-            <div class="trending-movie" data-movieId=${movie.id}>
-                <div class="trends">
+            <div class="trending-movie trend" data-movieId=${movie.id}>
+                <div class="trends movie-poster">
                     <img src="https://image.tmdb.org/t/p/original${movie.poster_path}" alt="${movie.title}">
                 </div>
                 <div class="trend-details">
@@ -79,65 +79,83 @@ loadMovies(currentPage);
 
 function loadMovies(currentPage){
     load.moviesFetch(currentPage).then((response)=>{
-        const moviesFetched=response[0]
+        return loadAndDisplay(load,response)
+    }).then((response)=>{
+             observers(response)
+    }).catch((error)=>{
+        console.log(error)
+    })
+}
+function observers(response){
+    // console.log(response)
+        const lastMovieObserver = new IntersectionObserver(entries=>{
+        console.log(response)
+        const lastElementObserver = entries[0];
+        if (!lastElementObserver.isIntersecting) return;
+        currentPage++
+        if (currentPage<=response){
+            lastMovieObserver.unobserve(lastElementObserver.target);
+            loadMovies(currentPage)
+            };
+        },{rootMargin:'1000px'})
+        lastMovieObserver.observe(document.querySelector('.trend:last-child'));
+       
+}
+function loadAndDisplay(classInstance,response){
+    const moviesFetched=response[0]
         for (const movie of moviesFetched){
             if (!movie.adult===true){
                 trendingMovies.push(movie)
-                console.log(movie)
             }
-       
         }
         
-        load.renderImage(trendingMovies);
+        classInstance.renderImage(trendingMovies);
         console.log(`Successfully rendered ${trendingMovies.length} trending movies to DOM`);
         likedMovie('trending-movie',trendingMovies);
-        displaySelectedMovie(trendingMovies,load);
+        displaySelectedMovie(trendingMovies,classInstance);
+        defaultSelectedMovieRender(classInstance,trendingMovies)
         return response[1]
-    }).then((response)=>{
-        const lastMovieObserver = new IntersectionObserver((entries=>{
-            const lastElementObserver = entries[0];
-            if (!lastElementObserver.isIntersecting) return;
-            currentPage++;
-            loadNextPage(currentPage,response);
-            lastElementObserver.unobserve(lastElementObserver.target)
-            lastMovieObserver.observe(document.querySelector('.trending-movie:last-child'));
-        }),{rootMargin:'-100px'})
-        lastMovieObserver.observe(document.querySelector('.trending-movie:last-child'));
-    })
 }
 
+// function displaySelectedMovie(list,classInstance){
+//     const movies = document.querySelectorAll('.trending-movie');
+//     movies.forEach((movie)=>{
+        
+//         movie.addEventListener('click',()=>{
+//             for (const film of movies){
+//                 film.classList.remove('add-opacity')
+//                 if (!(movie===film)){
+//                     film.classList.add('add-opacity');
+//                 }
+//             }
+//             const movieId= movie.dataset.movieid;
+//             const response = classInstance.renderMovieDetails(movieId,list);
+//             if (document.querySelector('.selected-movie')) document.querySelector('.selected-movie').remove()
+//             document.body.append(response);
+//             classInstance.watch();
+//         })
+//     })
+// }
 
-function displaySelectedMovie(list,load){
+function defaultSelectedMovieRender(classInstance,list){
+    const movie=document.querySelector('.trend:first-child');
+    const movieId= movie.dataset.movieid;
+    const response = classInstance.renderMovieDetails(movieId,list);
+    document.body.append(response);
+    load.watch();
+}
+// function loadNextPage(page_number,total_pages){
+//     if (page_number>total_pages) return;
+//     // console.log(page_number)
+//     loadMovies(page_number)
+// }
+
+document.addEventListener('click',(event)=>{
     const movies = document.querySelectorAll('.trending-movie');
-    movies.forEach((movie)=>{
-        movie.addEventListener('click',()=>{
-            const movieId= movie.dataset.movieid;
-            const response = load.renderMovieDetails(movieId,list)
-            const code = createSelectedMovieContainer(response);
-            document.body.append(code);
-            load.watch();
-            closeSelectedMovieBar();
-        })
-    })
-}
+    if (!document.querySelector('.trends').contains(event.target)){
+        for (const film of movies){
+            film.classList.remove('add-opacity')
+        }
+    }
+})
 
-function createSelectedMovieContainer(code){
-    const selectedMovie = document.createElement('section');selectedMovie.classList.add('selected-movie-overall-container');
-    const close = document.createElement('i');
-    close.classList.add('fa-solid', 'fa-close','close')
-    selectedMovie.appendChild(close)
-    selectedMovie.append(code)
-    return selectedMovie
-}
-
-function closeSelectedMovieBar(){
-    const closeIcon = document.querySelector('.close');
-    closeIcon.addEventListener('click',()=>{
-        document.body.querySelector('.selected-movie-overall-container').remove()
-    })
-}
-function loadNextPage(page_number,total_pages){
-    if (page_number>total_pages) return;
-    // console.log(page_number)
-    loadMovies(page_number)
-}

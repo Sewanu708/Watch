@@ -155,8 +155,9 @@ export class Loadfrombackend{
      renderMovieDetails(movieId,list){
        try{
         const details = this.movieDetails(movieId,list);
-        console.log(this.seriesGenre)
-        console.log(this.genre)
+        // console.log(this.seriesGenre)
+        // console.log(this.genre)
+        console.log(details)
         const movieGenres = details.genre_ids.reduce((accumulator,currentValue)=>{
             const genre = this.genre.find(genre=>genre.id === currentValue)
             accumulator.push(genre.name)
@@ -178,7 +179,7 @@ export class Loadfrombackend{
             <div class="selected-movie-description">
                 <div class="selected-movie-title-rating">
                     <div class="selected-movie-title">
-                    ${details.original_title}
+                    ${details.original_title ||details.original_name}
                     </div>
     
                     <div class="selected-movie-rating">
@@ -187,7 +188,7 @@ export class Loadfrombackend{
                     </div>
                 </div>
                 <div class="year-genre">
-                    <div class="year">${this.getDate(details.release_date)}<span class="genre">
+                    <div class="year">${this.getDate(details.release_date ||details.first_air_date)}<span class="genre">
                         ${movieGenreName}
                       
                     </span></div>
@@ -254,9 +255,13 @@ export function likedMovie(container,movieList){
     movies.forEach((movie)=>{
         const movieId=movie.dataset.movieid;
         const movieDetailObject=movieList.find(movie=> movie.id == movieId)
-
+        const ids = favouriteMovies.reduce((accumulator,currentValue)=>{
+            accumulator.push(currentValue.id)
+            return accumulator
+        },[])
+       
         const likedMovie=movie.querySelector('.js-fav');
-        if (favouriteMovies.includes(movieDetailObject)){
+        if (ids.includes(movieDetailObject.id)){
             likedMovie.classList.add('fa-solid');
             likedMovie.classList.remove('fa-regular');
         }
@@ -278,7 +283,38 @@ export function likedMovie(container,movieList){
             })
     })
         
-    
 
+}
+
+export function displaySelectedMovie(list,classInstance){
+    const movies = document.querySelectorAll('.trend');
+    // console.log(movies)
+    movies.forEach((movie)=>{
+        
+        movie.addEventListener('click',()=>{
+            // console.log(movie.dataset)
+            for (const film of movies){
+                film.classList.remove('add-opacity')
+                if (!(movie===film)){
+                    film.classList.add('add-opacity');
+                }
+            }
+            const movieId= movie.dataset.movieid;
+            
+            const response = classInstance.renderMovieDetails(movieId,list)
+            if (document.querySelector('.selected-movie')) document.querySelector('.selected-movie').remove()
+            document.body.append(response)
+            classInstance.watch()
+        })
+    })
+
+    document.addEventListener('click',(event)=>{
+        const movies = document.querySelectorAll('.trending-movie');
+        if (!document.querySelector('.trends').contains(event.target)){
+            for (const film of movies){
+                film.classList.remove('add-opacity')
+            }
+        }
+    })
 }
 
