@@ -87,3 +87,12 @@ function observers(response){
         lastMovieObserver.observe(document.querySelector('.trend:last-child'));
        
 }
+
+document.addEventListener('click',(event)=>{
+    const movies = document.querySelectorAll('.trending-movie');
+    if (!document.querySelector('.trends').contains(event.target)){
+        for (const film of movies){
+            film.classList.remove('add-opacity')
+        }
+    }
+})

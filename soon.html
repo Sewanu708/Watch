@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WATCH-Favourites</title>
+    <title>Coming Soon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./styles/watch.css">
-    <link rel="stylesheet" href="./styles/fav.css">
+    <!-- <link rel="stylesheet" href="trend.css"> -->
 </head>
-<body> 
+<body>
     <div class="side-bar">
         <button class="theme-mode">
          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M480-360q50 0 85-35t35-85q0-50-35-85t-85-35q-50 0-85 35t-35 85q0 50 35 85t85 35Zm0 80q-83 0-141.5-58.5T280-480q0-83 58.5-141.5T480-680q83 0 141.5 58.5T680-480q0 83-58.5 141.5T480-280ZM200-440H40v-80h160v80Zm720 0H760v-80h160v80ZM440-760v-160h80v160h-80Zm0 720v-160h80v160h-80ZM256-650l-101-97 57-59 96 100-52 56Zm492 496-97-101 53-55 101 97-57 59Zm-98-550 97-101 59 57-100 96-56-52ZM154-212l101-97 55 53-97 101-59-57Zm326-268Z"/></svg>
@@ -71,7 +71,7 @@
          </div>
  
      </div>
-    <section class="fav-page">
+    <section class="trend-page">
     
         <nav>
             <div class="right-side">
@@ -104,25 +104,60 @@
                 <i class="fa-solid  fa-bars  hamburger"></i>
             </div>
         </nav>
-
         <div class="search-area js-search-area">
             <input type="text" name="" id="search" placeholder="Search here...">
             <label for=""><i class="fa-solid fa-magnifying-glass mag-glass "></i></label>    
         </div>
-
     </section>
-    
-    <section class="favourites">
-        <div class="trend-text">Favourites</div>
-        <div class="favs">
+    <section class="trend-section trending">
+        <div class="trend-text">Coming Soon</div>
+        <div class="trending-movies trends">
             
         </div>
     </section>
-
+    
+    <!-- <section class="selected-movie-overall-container">
+        <i class="fa-solid fa-close" id="close"></i>
+        <div class="selected-movie">
+            <div class="selected-image">
+                <img src="./images/victor-furtuna-fwMckadwgDQ-unsplash.jpg" alt="">
+            </div>
+            <div class="selected-movie-description">
+                <div class="selected-movie-title-rating">
+                    <div class="selected-movie-title">
+                        House of Wealth
+                    </div>
+    
+                    <div class="selected-movie-rating">
+                        <i class="fa-solid fa-star"></i>
+                        <p>7.8/10</p>
+                    </div>
+                </div>
+                <div class="year-genre">
+                    <div class="year">2023 <span class="genre">
+                        Drama | Documentary | Horror | Family
+                    </span></div>
+                     <div ></div> 
+                 </div>
+                <div class="overview">
+                    The movie follows the lives of a wealthy family, the Johnsons, who appear to have it all: a grand mansion, luxurious cars, and expensive designer clothing. However, behind the facade of their lavish lifestyle, there are deep-seated tensions and secrets that threaten to tear the family apart.
+                </div>
+                <div class="action">
+                    <button class="watch-now">
+                        Watch now
+                    </button>
+    
+                    <button class="fav" >
+                        <i class="fa-regular fa-heart js-favourite"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section> -->
     
 </body>
 
 
 <script type="module" src="./scripts/general.js"></script>
-<script type="module" src="./scripts/fav.js"></script>
+<script type="module" src="./scripts/trend.js"></script>
 </html>

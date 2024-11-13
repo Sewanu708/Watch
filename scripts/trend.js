@@ -1,5 +1,4 @@
 import {Loadfrombackend,likedMovie,displaySelectedMovie} from './loadHomePage.js'
-
 const options = {
     method: 'GET',
     headers: {
@@ -9,10 +8,12 @@ const options = {
 }
 class Trend extends Loadfrombackend{
     async moviesFetch(pageNumber){
-        let pages;
+        let pages,link;
         try{
             this.trending=this.trending?[]:this.trending;
-            const movies = await fetch(`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${pageNumber}`, this.options);
+            link = location.pathname==="/trending.html"?`https://api.themoviedb.org/3/trending/movie/day?language=en-US&page=${pageNumber}`: `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=${pageNumber}`
+           
+            const movies = await fetch(link, this.options);
             const moviesJson = await movies.json();
             pages=moviesJson.total_pages;
             this.trending.push(moviesJson.results);
