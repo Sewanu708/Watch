@@ -117,26 +117,6 @@ function loadAndDisplay(classInstance,response){
         return response[1]
 }
 
-// function displaySelectedMovie(list,classInstance){
-//     const movies = document.querySelectorAll('.trending-movie');
-//     movies.forEach((movie)=>{
-        
-//         movie.addEventListener('click',()=>{
-//             for (const film of movies){
-//                 film.classList.remove('add-opacity')
-//                 if (!(movie===film)){
-//                     film.classList.add('add-opacity');
-//                 }
-//             }
-//             const movieId= movie.dataset.movieid;
-//             const response = classInstance.renderMovieDetails(movieId,list);
-//             if (document.querySelector('.selected-movie')) document.querySelector('.selected-movie').remove()
-//             document.body.append(response);
-//             classInstance.watch();
-//         })
-//     })
-// }
-
 function defaultSelectedMovieRender(classInstance,list){
     const movie=document.querySelector('.trend:first-child');
     const movieId= movie.dataset.movieid;
@@ -144,11 +124,6 @@ function defaultSelectedMovieRender(classInstance,list){
     document.body.append(response);
     load.watch();
 }
-// function loadNextPage(page_number,total_pages){
-//     if (page_number>total_pages) return;
-//     // console.log(page_number)
-//     loadMovies(page_number)
-// }
 
 document.addEventListener('click',(event)=>{
     const movies = document.querySelectorAll('.trending-movie');

@@ -155,14 +155,18 @@ export class Loadfrombackend{
      renderMovieDetails(movieId,list){
        try{
         const details = this.movieDetails(movieId,list);
-        // console.log(this.seriesGenre)
-        // console.log(this.genre)
+        console.log(this.seriesGenre)
+        console.log(this.genre)
         console.log(details)
         const movieGenres = details.genre_ids.reduce((accumulator,currentValue)=>{
-            const genre = this.genre.find(genre=>genre.id === currentValue)
-            accumulator.push(genre.name)
-            return accumulator
-        },[])      
+            let genre = this.genre.find(genre=>genre.id === currentValue);
+            if (!genre) {
+                genre = this.seriesGenre.find(genre=>genre.id === currentValue);
+            };
+            accumulator.push(genre.name);
+            return accumulator;
+        },[])
+
         const movieGenreName = movieGenres.join(' | ')
         
         const selectedMovieContainer = document.createElement("div");
@@ -307,14 +311,9 @@ export function displaySelectedMovie(list,classInstance){
             classInstance.watch()
         })
     })
-
-    document.addEventListener('click',(event)=>{
-        const movies = document.querySelectorAll('.trending-movie');
-        if (!document.querySelector('.trends').contains(event.target)){
-            for (const film of movies){
-                film.classList.remove('add-opacity')
-            }
-        }
-    })
+    
 }
+
+
+
 

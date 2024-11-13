@@ -20,7 +20,7 @@ class Favfetch extends Loadfrombackend{
     }
    
    seriesCode(movie,seriesGenre){
-    console.log(movie)
+ 
     const movieGenres = movie.genre_ids.reduce((accumulator,currentValue)=>{
         let genre = seriesGenre.find(genre=>genre.id == currentValue);
         accumulator.push(genre.name);
@@ -91,7 +91,7 @@ class Favfetch extends Loadfrombackend{
             
             
             let counter=0;
-            console.log(this.genre)
+           
             if (!this.genre) await this.loadGenre()
             if (!this.seriesGenre) await this.loadGenre()
             
@@ -102,11 +102,11 @@ class Favfetch extends Loadfrombackend{
         }
     }
     renderFavs(list){
-        console.log('Life is good!')
+        
         const movies = document.querySelector('.favs');
         let moviesCode='';
         for (const movie of list){
-            console.log(movie)
+
             if (movie.media_type) {
                 moviesCode+=this.movieCode(movie,this.genre);
             }else{
@@ -120,49 +120,98 @@ class Favfetch extends Loadfrombackend{
 
 
 const favList = JSON.parse(localStorage.getItem('favourites'));
-console.log(favList)
+
 renderFavMovies(favList)
 
-function likedMovieFunction(movieList,load){
+function likedMovieFunction(movieList,classInstance){
+    // Load all favourites in the dom to movies
     const movies = document.querySelectorAll('.favourite-movies');
     let favouriteMovies = localStorage.getItem('favourites')? JSON.parse(localStorage.getItem('favourites')) : [];
+    
 
     movies.forEach((movie)=>{
         const movieId=movie.dataset.movieid;
         const movieDetailObject=movieList.find(movie=> movie.id == movieId);
         const likedMovie=movie.querySelector('.js-fav');
-        
-        for (const fav of favouriteMovies){
-            console.log(fav)
-            console.log(fav.id===movieDetailObject.id)
-            if (fav.id===movieDetailObject.id){
-                likedMovie.classList.add('fa-solid');
-                likedMovie.classList.remove('fa-regular')
-            }
-        }
-            likedMovie.addEventListener('click',()=>{
-             
-                likedMovie.classList.remove('fa-solid');
-                likedMovie.classList.add('fa-regular');
-                favouriteMovies=removeItem(favouriteMovies,movieDetailObject);
-                
-                localStorage.setItem('favourites',JSON.stringify(favouriteMovies));
-                console.log(favouriteMovies);
-                try{
-                    // load.renderFavs(favouriteMovies)
-                    likedMovieFunction(favouriteMovies,load)
-                    
-                }catch(error){
-                    console.log(error)
-                }
-            })
-            })
+        favouriteMovies.forEach(fav=>{
+            likeRemove(likedMovie)
+        })
+
+        likedMovie.addEventListener('click',()=>{
+            likeRemove(likedMovie)
+            favouriteMovies=removeItem(favouriteMovies,movieDetailObject);
+            localStorage.setItem('favourites',JSON.stringify(favouriteMovies));
+            classInstance.renderFavs(favouriteMovies)
+            likedMovieFunction(movieList,classInstance)
+            
+        })
+    })
 }
         
+function likeRemove(element){
+    element.classList.add('fa-solid');
+    element.classList.remove('fa-regular')
+}
 
 function renderFavMovies(movieList){
-    // console.log(movieList)
+
     const load = new Favfetch(options,movieList);
-    load.renderImage().then((response)=> likedMovieFunction(movieList,load))
+    load.renderImage().then((response)=> {
+        likedMovieFunction(movieList,load);
+        displaySelectedMovie(movieList,load)      
+    })
 }
 
+
+function displaySelectedMovie(list,classInstance){
+    const movies = document.querySelectorAll('.favourite-movies');
+
+    movies.forEach((movie)=>{
+        
+        movie.addEventListener('click',(e)=>{
+            
+            if (e.target.classList.contains('js-fav')) return;
+
+            for (const film of movies){
+                film.classList.remove('add-opacity')
+                if (!(movie===film)){
+                    film.classList.add('add-opacity');
+                }
+            }
+            const movieId= movie.dataset.movieid;
+            const response = classInstance.renderMovieDetails(movieId,list)
+            if (document.querySelector('.selected-movie-overall-container')) document.querySelector('.selected-movie-overall-container').remove()
+
+            const overallContainer = document.createElement('div')
+            overallContainer.classList.add('selected-movie-overall-container')
+
+            overallContainer.innerHTML=`<i class= "fa-solid fa-close close"></i>`
+
+            overallContainer.append(response)
+            
+            document.body.append(overallContainer)
+            closeSelectedMovie();
+            classInstance.watch()
+        })
+        
+    })
+    
+}
+
+
+
+
+
+
+
+
+
+function closeSelectedMovie(){
+    document.querySelector('.close').addEventListener('click',()=>{
+        document.querySelector('.selected-movie-overall-container').remove();
+        const movies = document.querySelectorAll('.favourite-movies');
+        for (const film of movies){
+            film.classList.remove('add-opacity');
+        }
+    });
+}

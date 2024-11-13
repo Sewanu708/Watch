@@ -1,4 +1,4 @@
-import {Loadfrombackend,saveFavMovies,removeItem,likedMovie} from './loadHomePage.js'
+import {Loadfrombackend,saveFavMovies,removeItem,likedMovie,displaySelectedMovie} from './loadHomePage.js'
 
 const options = {
     method: 'GET',
@@ -23,14 +23,24 @@ function loadMovies(currentPage){
 }
 function mainPageFav(movieList){
         const likedMovie=document.querySelector('.js-favourite');
-        likedMovie.addEventListener('click',()=>{
-   
         let favouriteMovies = JSON.parse(localStorage.getItem('favourites'))? JSON.parse(localStorage.getItem('favourites')) : [];
 
         // console.log(favouriteMovies)
         const movieId=document.querySelector('.js-description').dataset.movieId;
         const movieDetailObject=movieList.find(movie=> movie.id == movieId)
+        
+        const ids = favouriteMovies.reduce((accumulator,currentValue)=>{
+            accumulator.push(currentValue.id)
+            return accumulator
+        },[])
+        if (ids.includes(movieDetailObject.id)){
+            likedMovie.classList.add('fa-solid');
+            likedMovie.classList.remove('fa-regular');
+        }
 
+
+        likedMovie.addEventListener('click',()=>{
+   
         if (likedMovie.classList.contains('fa-solid')){
             likedMovie.classList.remove('fa-solid');
             likedMovie.classList.add('fa-regular');
@@ -43,24 +53,6 @@ function mainPageFav(movieList){
             // console.log(favouriteMovies)
         }  
         localStorage.setItem('favourites',JSON.stringify(favouriteMovies))
-    })
-}
-
-function displaySelectedMovie(list,load){
-    const movies = document.querySelectorAll('.trend');
-    // console.log(movies)
-    movies.forEach((movie)=>{
-        
-        movie.addEventListener('click',()=>{
-            // console.log(movie.dataset)
-            
-            const movieId= movie.dataset.movieid;
-            
-            const response = load.renderMovieDetails(movieId,list)
-            if (document.querySelector('.selected-movie')) document.querySelector('.selected-movie').remove()
-            document.body.append(response)
-            load.watch()
-        })
     })
 }
 
