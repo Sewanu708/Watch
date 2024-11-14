@@ -235,24 +235,26 @@ export class Loadfrombackend{
     }
 }
 export function saveFavMovies(arr,value){
-    const found = arr.findIndex((movie)=>{
-        return movie===value
-    });
-
-    if (found<0){
-        arr.push(value);
-    }
-
-    return arr
+    let ids = arr.reduce((a,c)=> a.push(c.id),[]);
+    const idToSave = value.id;
+    ids.push(idToSave);
+    ids=[...new Set(ids)]
+    arr.push(value);
+    const newArr = ids.reduce((a,c)=>{
+        a.push(arr.find(obj=>obj.id===c));
+        return a;
+    },[])
+    return newArr
 }
 
 export function removeItem(arr,value){
-    const index = arr.findIndex(element=>  {return element===value});
+    const ids = arr.reduce((a,c)=> a.push(c.id),[])
+    const idToRemove = value.id
+    const index = ids.indexOf(idToRemove)
     arr.splice(index,1);
-    return arr
+    return arr;
 }
 export function likedMovie(container,movieList){
-    
     const movies = document.querySelectorAll(`.${container}`);
     let favouriteMovies = JSON.parse(localStorage.getItem('favourites'))? JSON.parse(localStorage.getItem('favourites')) : [];
     favouriteMovies=favouriteMovies;
@@ -286,8 +288,6 @@ export function likedMovie(container,movieList){
             // console.log(localStorage.getItem('favourites'))
             })
     })
-        
-
 }
 
 export function displaySelectedMovie(list,classInstance){

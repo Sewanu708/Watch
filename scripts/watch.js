@@ -40,7 +40,7 @@ function mainPageFav(movieList){
 
 
         likedMovie.addEventListener('click',()=>{
-   
+            
         if (likedMovie.classList.contains('fa-solid')){
             likedMovie.classList.remove('fa-solid');
             likedMovie.classList.add('fa-regular');

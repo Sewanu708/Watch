@@ -200,12 +200,6 @@ function displaySelectedMovie(list,classInstance){
 
 
 
-
-
-
-
-
-
 function closeSelectedMovie(){
     document.querySelector('.close').addEventListener('click',()=>{
         document.querySelector('.selected-movie-overall-container').remove();
@@ -215,3 +209,4 @@ function closeSelectedMovie(){
         }
     });
 }
+
